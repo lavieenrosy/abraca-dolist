@@ -6,7 +6,6 @@ exports.up = function(knex, Promise) {
     table.string('type');
     table.integer('user_id');
   });
-
 };
 
 exports.down = function(knex, Promise) {
