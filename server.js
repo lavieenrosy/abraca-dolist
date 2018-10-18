@@ -38,9 +38,56 @@ app.use(express.static("public"));
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
 
-// Home page
+//-----------------------HOME PAGE-----------------------//
 app.get("/", (req, res) => {
   res.render("index");
+});
+
+//-------------------GET /lists ROUTES-------------------//
+// client --req--> server --lookup--> DB --todos--> server --todos--> client
+
+//grabs data from DB and sends json to client
+
+app.get('/todos', function(req, res) {
+  datahelpers.getTodos((err, data) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.json(data);
+    }
+  });
+});
+
+//---------------------EDIT ROUTES---------------------//
+// client --changes--> server --changes--> DB
+// changes are simply the todo id and new category
+
+app.patch('/todo/:id', function(req, res) {
+
+  knex('table-name')
+    .where('id', id)
+    .update({
+      category: 'category'
+
+  //figure out what knex returns (a promise?) and send that back to the client
+
+});
+
+//-------------------NEW TODO ROUTES-------------------//
+// client --todo--> server --todo--> API --data--> server(dataHelper1) --dataHelper2--> DB --id--> server(datahelper3) --todo--> client
+// dataHelper1 parses API data and returns a name & category
+// dataHelper2 creates new todo in DB
+// dataHelper3 SELECT the new todo from the DB and send it to the client
+
+app.post('/todos', function(req, res) {
+
+  const todoName = req.body.text;
+  //send request to API with req.body.text
+  const nameAndCategory = dataHelper1(responseFromAPI?);
+  dataHelper2();
+  const newTodo = dataHelper3()
+  res.json(newTodo);
+
 });
 
 app.listen(PORT, () => {
