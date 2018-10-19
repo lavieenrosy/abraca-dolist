@@ -14,6 +14,9 @@ const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
 const datahelpers = require('./datahelpers')(knex);
+var auth = require('./secrets.js');
+var request = require('request');
+const apihelpers = require('./apihelpers')
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
@@ -93,15 +96,45 @@ app.patch('/todo/:id', function(req, res) {
 // dataHelper2 creates new todo in DB
 // dataHelper3 SELECT the new todo from the DB and send it to the client
 
+
+function requestToWolfram(input, cb) {
+  var options = {
+    url: "http://api.wolframalpha.com/v2/query?input=" + input + "&appid=" + auth.WOLFRAM_ID + "&output=json",
+    json: true
+  };
+  request(options, function(err, res, body) {
+    cb(err, body);
+  });
+};
+
 app.post('/todos', function(req, res) {
 
   const todoName = req.body.text;
-  console.log(todoName)
+
+  requestToWolfram(todoName, function(err, result) {
+    var arrayOfValueObjects = result.queryresult.assumptions.values;
+    var arrayOfCategories = [];
+
+    if (arrayOfValueObjects){
+      arrayOfValueObjects.forEach((item) => {
+        var category = item.name;
+        arrayOfCategories.push(category);
+      });
+      console.log(arrayOfCategories);
+    } else {
+      console.log("No data fetched");
+    };
+
+    const category = apihelpers(arrayOfCategories);
+    console.log(category);
+
+
+  });
   //send request to API with req.body.text
   // const nameAndCategory = dataHelper1(responseFromAPI);
   // dataHelper2();
   // const newTodo = dataHelper3()
-  res.json(todoName);
+ // res.json(todoName);
 
 });
 
