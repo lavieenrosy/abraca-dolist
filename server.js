@@ -96,11 +96,12 @@ app.patch('/todo/:id', function(req, res) {
 app.post('/todos', function(req, res) {
 
   const todoName = req.body.text;
+  console.log(todoName)
   //send request to API with req.body.text
-  const nameAndCategory = dataHelper1(responseFromAPI);
-  dataHelper2();
-  const newTodo = dataHelper3()
-  res.json(newTodo);
+  // const nameAndCategory = dataHelper1(responseFromAPI);
+  // dataHelper2();
+  // const newTodo = dataHelper3()
+  res.json(todoName);
 
 });
 

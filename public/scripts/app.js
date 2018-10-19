@@ -54,7 +54,6 @@ const actualData = [
       url: ('/todos'),
       success: function (data) {
         renderTodos(data);
-        console.log("ROSY ",data);
       },
       error: function (err, data) {
         console.log('Error: ', err);
@@ -64,6 +63,31 @@ const actualData = [
 
 
 loadTodos();
+
+// Drag and drop functionality. Tutorial: https://www.tutorialspoint.com/jqueryui/jqueryui_draggable.htm
+
+$( '.card' ).draggable({ appendTo: $('.col'), containment: $('.col') });
+
+  //look at grid option to snap to a grid
+
+$( '.col' ).droppable();
+
+// Form capture
+
+$('form').on('submit', function (event) {
+  event.preventDefault();
+  // const newTodo = $('.todo-form').find('.form-control').val();
+  // console.log(newTodo);
+  const data = $('form').serialize();
+
+  //form validation?
+
+  $.ajax( '/todos', { method: 'POST', data: data })
+    .then(function (data) {
+      console.log('Success!', data);
+      loadNewTodo();
+    });
+});
 
 
 
