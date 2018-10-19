@@ -82,7 +82,7 @@ $('form').on('submit', function (event) {
   $.ajax( '/todos', { method: 'POST', data: data })
     .then(function (data) {
       console.log('Success!', data);
-      // loadTodos(data);
+      loadNewTodo();
     });
 });
 
