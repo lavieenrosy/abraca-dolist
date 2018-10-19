@@ -20,6 +20,10 @@ const usersRoutes = require("./routes/users");
 
 const todos = datahelpers.getTodos();
 
+datahelpers.insertTodo('la croix', 'food', 2).then((id) => {
+  console.log("Record insertion was successful", id);
+});
+
 // todos.then((data) => {
 //   console.log(data);
 // })
