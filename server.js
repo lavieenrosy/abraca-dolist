@@ -13,13 +13,22 @@ const knexConfig  = require("./knexfile");
 const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
+const datahelpers = require('./datahelpers')(knex);
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
 
+const todos = datahelpers.getTodos();
+
+todos.then((data) => {
+  console.log(data);
+})
+.catch((error) => {
+  console.log(error);
+})
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
-//         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
+//The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan('dev'));
 
 // Log knex SQL queries to STDOUT as well
@@ -68,7 +77,7 @@ app.patch('/todo/:id', function(req, res) {
     .where('id', id)
     .update({
       category: 'category'
-
+    })
   //figure out what knex returns (a promise?) and send that back to the client
 
 });
@@ -91,5 +100,5 @@ app.post('/todos', function(req, res) {
 });
 
 app.listen(PORT, () => {
-  console.log("Example app listening on port " + PORT);
+  console.log("Abraca-Dolist listening on port:" + PORT);
 });
