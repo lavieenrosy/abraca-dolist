@@ -25,7 +25,10 @@ const actualData = [
   function createTodoElement(data) {
     const $cardText = $("<div>").addClass("card-body").text(data.name); //change this later
     const $card = $("<div>").addClass("card").append($cardText);
+    const $edit = $("<button class='edit'> Edit</button>").appendTo($cardText);
+    const $delete= $("<button class='delete'> Delete</button>").appendTo($cardText);
     return $card;
+
   };
 
   //assuming data is in an array
