@@ -37,5 +37,3 @@ function requestToYelp(todo, cb) {
   request(options, cb);
 }
 }
-
-
