@@ -68,7 +68,7 @@ app.patch('/todo/:id', function(req, res) {
     .where('id', id)
     .update({
       category: 'category'
-    });
+
   //figure out what knex returns (a promise?) and send that back to the client
 
 });
