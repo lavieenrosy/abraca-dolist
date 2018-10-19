@@ -5,3 +5,25 @@ body {
     color: #244751;
   }
 }
+
+.input {
+  height: 300px;
+  position: relative;
+}
+
+form {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+
+}
+
+.col {
+  border: 1px solid black;
+  margin: 0 8px;
+  padding: 15px;
+}
+
+.card-body {
+  padding: 10px;
+}

@@ -68,7 +68,7 @@ app.patch('/todo/:id', function(req, res) {
     .where('id', id)
     .update({
       category: 'category'
-
+    });
   //figure out what knex returns (a promise?) and send that back to the client
 
 });
@@ -83,7 +83,7 @@ app.post('/todos', function(req, res) {
 
   const todoName = req.body.text;
   //send request to API with req.body.text
-  const nameAndCategory = dataHelper1(responseFromAPI?);
+  const nameAndCategory = dataHelper1(responseFromAPI);
   dataHelper2();
   const newTodo = dataHelper3()
   res.json(newTodo);
