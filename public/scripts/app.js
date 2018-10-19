@@ -1,13 +1,14 @@
 $(() => {
 
-  $.ajax({
-    method: "GET",
-    url: "/api/users"
-  }).done((users) => {
-    for(user of users) {
-      $("<div>").text(user.name).appendTo($("body"));
-    }
-  });;
+
+  // $.ajax({
+  //   method: "GET",
+  //   url: "/api/users"
+  // }).done((users) => {
+  //   for(user of users) {
+  //     $("<div>").text(user.name).appendTo($("body"));
+  //   }
+  // });;
 
 const actualData = [
   {id: 1, name: 'Starbucks', category: 'eat', user_id: 1},
@@ -50,12 +51,14 @@ const actualData = [
       url: ('/todos'),
       success: function (data) {
         renderTodos(data);
+        console.log("ROSY ",data);
       },
       error: function (err, data) {
         console.log('Error: ', err);
       }
     });
   };
+
 
 loadTodos();
 

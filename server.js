@@ -20,12 +20,12 @@ const usersRoutes = require("./routes/users");
 
 const todos = datahelpers.getTodos();
 
-todos.then((data) => {
-  console.log(data);
-})
-.catch((error) => {
-  console.log(error);
-})
+// todos.then((data) => {
+//   console.log(data);
+// })
+// .catch((error) => {
+//   console.log(error);
+// })
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
@@ -58,13 +58,14 @@ app.get("/", (req, res) => {
 //grabs data from DB and sends json to client
 
 app.get('/todos', function(req, res) {
-  datahelpers.getTodos((err, data) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-    } else {
-      res.json(data);
-    }
+
+  todos.then((data) => {
+    res.json(data);
+  })
+  .catch((error) => {
+    res.status(500).json({error: err.message});
   });
+
 });
 
 //---------------------EDIT ROUTES---------------------//
