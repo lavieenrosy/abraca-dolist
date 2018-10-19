@@ -10,17 +10,6 @@ $(() => {
   //   }
   // });;
 
-const actualData = [
-  {id: 1, name: 'Starbucks', category: 'eat', user_id: 1},
-  {id: 2, name: 'Whitespot', category: 'eat', user_id: 2},
-  {id: 3, name: 'life of pi', category: 'read', user_id: 3},
-  {id: 4, name: 'Charlie and the chocolate factory', category:'watch', user_id: 1},
-  {id: 5, name: 'Iphone', category:'buy', user_id: 4},
-  {id: 6, name: 'Nikon', category:'buy', user_id: 3},
-  {id: 7, name: 'Free your mind', category:'read', user_id: 2},
-  {id: 8, name: 'Alibaba: The house Jack Ma built', category:'read', user_id: 4},
-  {id: 9, name: 'Nikon', category:'buy', user_id: 2}
-]
 
   function createTodoElement(data) {
     const $cardText = $("<div>").addClass("card-body").text(data.name); //change this later
@@ -54,6 +43,7 @@ const actualData = [
       url: ('/todos'),
       success: function (data) {
         renderTodos(data);
+        console.log("ROSY ",data);
       },
       error: function (err, data) {
         console.log('Error: ', err);
@@ -64,32 +54,9 @@ const actualData = [
 
 loadTodos();
 
-// Drag and drop functionality. Tutorial: https://www.tutorialspoint.com/jqueryui/jqueryui_draggable.htm
+function loadNewTodos(){
 
-$( '.card' ).draggable({ appendTo: $('.col'), containment: $('.col') });
-
-  //look at grid option to snap to a grid
-
-$( '.col' ).droppable();
-
-// Form capture
-
-$('form').on('submit', function (event) {
-  event.preventDefault();
-  // const newTodo = $('.todo-form').find('.form-control').val();
-  // console.log(newTodo);
-  const data = $('form').serialize();
-
-  //form validation?
-
-  $.ajax( '/todos', { method: 'POST', data: data })
-    .then(function (data) {
-      console.log('Success!', data);
-      loadNewTodo();
-    });
-});
-
-
+}
 
 });
 
