@@ -10,6 +10,7 @@ $(() => {
 
   };
 
+  //assuming dat is in an array
   function renderTodos(data) {
     for (i = 0; i < data.length; i++) {
       const todo = createTodoElement(data[i]);
@@ -55,7 +56,7 @@ $(() => {
   };
 
 
-loadTodos();
+  loadTodos();
 
 // Drag and drop functionality. Tutorial: https://www.tutorialspoint.com/jqueryui/jqueryui_draggable.htm
 
@@ -67,20 +68,27 @@ $( '.col' ).droppable();
 
 // Form capture
 
-$('form').on('submit', function (event) {
+$('#todo-form').on('submit', function (event) {
   event.preventDefault();
-  const data = $('form').serialize();
+  var submitText = $('#todo-input').val();
 
-  //form validation?
+  // text field cannot be left empty---
+   $('.error').slideUp();
+      if(submitText === "" ){
+        $('.error').text("Error: Cannot leave this field empty").slideDown();
+    } else {
+      const data = $('form').serialize();
 
-  $.ajax( '/todos', { method: 'POST', data: data })
-    .then(function (data) {
-      console.log('Success!', data);
-      singleTodo(data);
+      //form validation?
+
+      $.ajax( '/todos', { method: 'POST', data: data })
+        .then(function (data) {
+          console.log('Success!', data);
+          singleTodo(data);
+          event.target.reset();
+       });
+    }
   });
-});
-
-
 
 });
 
