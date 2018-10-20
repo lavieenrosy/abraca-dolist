@@ -83,8 +83,10 @@ app.get('/todos', function(req, res) {
 app.post('/todos/:id/delete', function(req, res) {
 
   datahelpers.deleteTodo(req.params.id).then((data) =>{
-    console.log('You deleted', data)
+    console.log('You deleted', data);
+    res.status(201);
   })
+
 
 })
 

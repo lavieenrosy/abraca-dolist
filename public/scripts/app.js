@@ -2,11 +2,10 @@ $(() => {
 
 
   function createTodoElement(data) {
-    const $cardText = $("<div>").addClass("card-body").text(data.name); //change this later
-    const $card     = $("<div>").addClass("card").append($cardText);
+    const $card     = $("<div>").addClass("card")
+    const $cardText = $("<div>").addClass("card-body").text(data.name).appendTo($card); //change this later
     const $edit     = $("<button class='edit'> Edit</button>").appendTo($cardText);
     const $delete   = $("<button class='delete'> Delete</button>").data('todo_id', data.id).appendTo($cardText);
-
 
     // $delete.on('click', ()=>console.log("log log console console"));
 
@@ -15,7 +14,7 @@ $(() => {
 
   //assuming dat is in an array
   function renderTodos(data) {
-    // TODO: before rendering new todos, clear out the odl ones
+    $('.card').empty();
     for (i = 0; i < data.length; i++) {
       const todo = createTodoElement(data[i]);
 
@@ -30,20 +29,21 @@ $(() => {
       }
     }
 
-
     $('.delete').on('click', function(event) {
       const todo_id = $(this).data('todo_id');
       $.ajax({
-      type: 'POST',
-      url: (`/todos/${todo_id}/delete`),
-      success: function (data){
-        renderTodos(data);
-      },
-      error: function (err, data) {
-        console.log('Error: ', err);
-      }
-    });
+        type: 'POST',
+        url: (`/todos/${todo_id}/delete`),
+        success: function (data){
+          console.log('SUCCESS')
+          renderTodos(data);
+        },
+        error: function (err, data) {
+          console.log('Error: ', err);
+        }
+      });
     })
+  };
 
 
   function singleTodo(data) {
@@ -58,8 +58,10 @@ $(() => {
     } else if (data.category == "buy") {
       $('.buy').append(todo);
     }
+
   };
- }
+
+
   function loadTodos() {
     $.ajax({
       type: 'GET',
@@ -74,13 +76,6 @@ $(() => {
   }
   loadTodos();
 
-
-  $('.delete').on('click', function(event) {
-    console.log('fuck your mother twice');
-
-  });
-
-
   // Drag and drop functionality. Tutorial: https://www.tutorialspoint.com/jqueryui/jqueryui_draggable.htm
   $( '.card' ).draggable({ appendTo: $('.col'), containment: $('.col') });
 
@@ -89,20 +84,6 @@ $(() => {
   $( '.col' ).droppable();
 
   // Form capture
-
-  // $('form').on('submit', function (event) {
-  //   event.preventDefault();
-  //   const data = $('form').serialize();
-
-  //   //form validation?
-
-  //   $.ajax( '/todos', { method: 'POST', data: data })
-  //     .then(function (data) {
-  //       console.log('Success!', data);
-  //       singleTodo(data);
-  //   });
-  // });
-
 
 $('#todo-form').on('submit', function (event) {
   event.preventDefault();
@@ -118,6 +99,7 @@ $('#todo-form').on('submit', function (event) {
         .then(function (data) {
           console.log('Success!', data);
           singleTodo(data);
+          loadTodos();
           event.target.reset();
        });
     }
