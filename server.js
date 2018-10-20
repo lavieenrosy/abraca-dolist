@@ -109,9 +109,9 @@ function requestToWolfram(input, cb) {
 
 app.post('/todos', function(req, res) {
 
-  const todoName = req.body.text;
+  const name = req.body.text;
 
-  requestToWolfram(todoName, function(err, result) {
+  requestToWolfram(name, function(err, result) {
     var arrayOfValueObjects = result.queryresult.assumptions.values;
     var arrayOfCategories = [];
 
@@ -124,17 +124,24 @@ app.post('/todos', function(req, res) {
     } else {
       console.log("No data fetched");
     };
-
     const category = apihelpers(arrayOfCategories);
-    console.log(category);
 
+    let id = 0;
+
+    datahelpers.insertTodo(name, category).then((id) => {
+      console.log("Record insertion was successful", id);
+      id = id;
+    });
+
+    const newTodoObject = { id, name, category };
+
+  res.json(newTodoObject);
 
   });
   //send request to API with req.body.text
   // const nameAndCategory = dataHelper1(responseFromAPI);
   // dataHelper2();
   // const newTodo = dataHelper3()
- // res.json(todoName);
 
 });
 

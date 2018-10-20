@@ -45,6 +45,21 @@ const actualData = [
     }
   }
 
+  function singleTodo(data) {
+    const todo = createTodoElement(data);
+
+    if (data.category === "eat") {
+      $('.eat').append(todo);
+    } else if (data.category == "watch") {
+      $('.watch').append(todo);
+    } else if (data.category == "read") {
+      $('.read').append(todo);
+    } else if (data.category == "buy") {
+      $('.buy').append(todo);
+    }
+  };
+
+
   function loadTodos() {
     $.ajax({
       type: 'GET',
@@ -82,8 +97,8 @@ $('form').on('submit', function (event) {
   $.ajax( '/todos', { method: 'POST', data: data })
     .then(function (data) {
       console.log('Success!', data);
-      loadNewTodo();
-    });
+      singleTodo(data);
+  });
 });
 
 
