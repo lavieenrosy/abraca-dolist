@@ -48,9 +48,10 @@
       <!-- Input field -->
 
       <section class="input">
-        <form action="/todos" method="POST">
-          <input class="form-control form-control-lg" name="text" type="text" placeholder="to do...">
+        <form id="todo-form" action="/todos" method="POST">
+          <input id="todo-input" class="form-control form-control-lg" name="text" type="text" placeholder="to do...">
           <input class="btn btn-success" type="submit" value="Submit">
+          <div class="error"></div>
         </form>
       </section>
 

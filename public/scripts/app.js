@@ -13,6 +13,7 @@ $(() => {
     return $card;
   };
 
+  //assuming dat is in an array
   function renderTodos(data) {
     // TODO: before rendering new todos, clear out the odl ones
     for (i = 0; i < data.length; i++) {
@@ -44,7 +45,6 @@ $(() => {
     });
     })
 
-  }
 
   function singleTodo(data) {
     const todo = createTodoElement(data);
@@ -59,8 +59,7 @@ $(() => {
       $('.buy').append(todo);
     }
   };
-
-
+ }
   function loadTodos() {
     $.ajax({
       type: 'GET',
@@ -72,9 +71,7 @@ $(() => {
         console.log('Error: ', err);
       }
     });
-  };
-
-
+  }
   loadTodos();
 
 
@@ -93,20 +90,37 @@ $(() => {
 
   // Form capture
 
-  $('form').on('submit', function (event) {
-    event.preventDefault();
-    const data = $('form').serialize();
+  // $('form').on('submit', function (event) {
+  //   event.preventDefault();
+  //   const data = $('form').serialize();
 
-    //form validation?
+  //   //form validation?
 
-    $.ajax( '/todos', { method: 'POST', data: data })
-      .then(function (data) {
-        console.log('Success!', data);
-        singleTodo(data);
-    });
+  //   $.ajax( '/todos', { method: 'POST', data: data })
+  //     .then(function (data) {
+  //       console.log('Success!', data);
+  //       singleTodo(data);
+  //   });
+  // });
+
+
+$('#todo-form').on('submit', function (event) {
+  event.preventDefault();
+  var submitText = $('#todo-input').val();
+
+  // text field cannot be left empty---
+   $('.error').slideUp();
+      if(submitText === "" ){
+        $('.error').text("Error: Cannot leave this field empty").slideDown();
+    } else {
+      const data = $('form').serialize();
+      $.ajax( '/todos', { method: 'POST', data: data })
+        .then(function (data) {
+          console.log('Success!', data);
+          singleTodo(data);
+          event.target.reset();
+       });
+    }
   });
-
-
-
 });
 
