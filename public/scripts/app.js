@@ -36,7 +36,6 @@ $(() => {
       type: 'POST',
       url: (`/todos/${todo_id}/delete`),
       success: function (data){
-        console.log('Gaurav is a saint');
         renderTodos(data);
       },
       error: function (err, data) {
