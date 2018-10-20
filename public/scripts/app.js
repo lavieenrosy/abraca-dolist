@@ -5,7 +5,7 @@ $(() => {
     const $card     = $("<div>").addClass("card")
     const $cardText = $("<div>").addClass("card-body").text(data.name).appendTo($card); //change this later
     const $edit     = $("<button class='edit'> Edit</button>").appendTo($cardText);
-    const $delete   = $("<button class='delete'> Delete</button>").data('todo_id', data.id).appendTo($cardText);
+    const $delete   = $("<button class='delete'> Delete</button>").attr('id',data.id).data('todo_id', data.id).appendTo($cardText);
 
     // $delete.on('click', ()=>console.log("log log console console"));
 
@@ -30,13 +30,13 @@ $(() => {
     }
 
     $('.delete').on('click', function(event) {
+      event.preventDefault();
       const todo_id = $(this).data('todo_id');
       $.ajax({
         type: 'POST',
         url: (`/todos/${todo_id}/delete`),
         success: function (data){
-          console.log('SUCCESS')
-          renderTodos(data);
+          $('#'+todo_id).parent().parent().empty();
         },
         error: function (err, data) {
           console.log('Error: ', err);
