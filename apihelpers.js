@@ -5,9 +5,9 @@ module.exports = function getCategory(arrayOfCategories) {
     //     arrayOfCategories.push(category);
     // });
 
-    var BookClass = arrayOfCategories.includes('BookClass');
-    var Movie = arrayOfCategories.includes('Movie');
-    var MovieClass = arrayOfCategories.includes('MovieClass');
+    var BookClass                = arrayOfCategories.includes('BookClass');
+    var Movie                    = arrayOfCategories.includes('Movie');
+    var MovieClass               = arrayOfCategories.includes('MovieClass');
     var ConsumerProductsPTEClass = arrayOfCategories.includes('ConsumerProductsPTEClass');
     // var RetailLocationClass = arrayOfCategories.includes('RetailLocationClass');
     var FoodTrueOrFalse = "";

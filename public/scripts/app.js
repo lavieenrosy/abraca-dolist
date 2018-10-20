@@ -3,14 +3,18 @@ $(() => {
 
   function createTodoElement(data) {
     const $cardText = $("<div>").addClass("card-body").text(data.name); //change this later
-    const $card = $("<div>").addClass("card").append($cardText);
-    const $edit = $("<button class='edit'> Edit</button>").appendTo($cardText);
-    const $delete= $("<button class='delete'> Delete</button>").appendTo($cardText);
-    return $card;
+    const $card     = $("<div>").addClass("card").append($cardText);
+    const $edit     = $("<button class='edit'> Edit</button>").appendTo($cardText);
+    const $delete   = $("<button class='delete'> Delete</button>").data('todo_id', data.id).appendTo($cardText);
 
+
+    // $delete.on('click', ()=>console.log("log log console console"));
+
+    return $card;
   };
 
   function renderTodos(data) {
+    // TODO: before rendering new todos, clear out the odl ones
     for (i = 0; i < data.length; i++) {
       const todo = createTodoElement(data[i]);
 
@@ -24,6 +28,23 @@ $(() => {
         $('.buy').append(todo);
       }
     }
+
+
+    $('.delete').on('click', function(event) {
+      const todo_id = $(this).data('todo_id');
+      $.ajax({
+      type: 'POST',
+      url: (`/todos/${todo_id}/delete`),
+      success: function (data){
+        console.log('Gaurav is a saint');
+        renderTodos(data);
+      },
+      error: function (err, data) {
+        console.log('Error: ', err);
+      }
+    });
+    })
+
   }
 
   function singleTodo(data) {
@@ -55,30 +76,36 @@ $(() => {
   };
 
 
-loadTodos();
+  loadTodos();
 
-// Drag and drop functionality. Tutorial: https://www.tutorialspoint.com/jqueryui/jqueryui_draggable.htm
 
-$( '.card' ).draggable({ appendTo: $('.col'), containment: $('.col') });
+  $('.delete').on('click', function(event) {
+    console.log('fuck your mother twice');
 
-  //look at grid option to snap to a grid
-
-$( '.col' ).droppable();
-
-// Form capture
-
-$('form').on('submit', function (event) {
-  event.preventDefault();
-  const data = $('form').serialize();
-
-  //form validation?
-
-  $.ajax( '/todos', { method: 'POST', data: data })
-    .then(function (data) {
-      console.log('Success!', data);
-      singleTodo(data);
   });
-});
+
+
+  // Drag and drop functionality. Tutorial: https://www.tutorialspoint.com/jqueryui/jqueryui_draggable.htm
+  $( '.card' ).draggable({ appendTo: $('.col'), containment: $('.col') });
+
+    //look at grid option to snap to a grid
+
+  $( '.col' ).droppable();
+
+  // Form capture
+
+  $('form').on('submit', function (event) {
+    event.preventDefault();
+    const data = $('form').serialize();
+
+    //form validation?
+
+    $.ajax( '/todos', { method: 'POST', data: data })
+      .then(function (data) {
+        console.log('Success!', data);
+        singleTodo(data);
+    });
+  });
 
 
 

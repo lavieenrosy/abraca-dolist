@@ -14,19 +14,19 @@ const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
 const datahelpers = require('./datahelpers')(knex);
-var auth = require('./secrets.js');
-var request = require('request');
-const apihelpers = require('./apihelpers')
+var auth          = require('./secrets.js');
+var request       = require('request');
+const apihelpers  = require('./apihelpers')
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
 
-const todos      = datahelpers.getTodos();
-const deleteTodo = datahelpers.deleteTodo(1111115);
+const todos       = datahelpers.getTodos();
+const deleteTodo  = datahelpers.deleteTodo(1111115);
 
-deleteTodo.then((data) =>{
-  console.log('You deleted', data)
-});
+// deleteTodo.then((data) =>{
+//   console.log('You deleted', data)
+// });
 
 // datahelpers.insertTodo('la croix', 'food', 2).then((id) => {
 //   console.log("Record insertion was successful", id);
@@ -80,8 +80,11 @@ app.get('/todos', function(req, res) {
 
 });
 //---------------------DELETE ROUTES---------------------//
-app.post('todo/:id/delete', function(req, res) {
+app.post('/todos/:id/delete', function(req, res) {
 
+  datahelpers.deleteTodo(req.params.id).then((data) =>{
+    console.log('You deleted', data)
+  })
 
 })
 
