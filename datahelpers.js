@@ -23,7 +23,8 @@ module.exports = function(knex) {
       .insert({
         name:     name,
         category: category,
-        user_id:  user_id
+        user_id:  user_id,
+        deleted:  'n'
       })
       .returning('id')
     },//deletes a todo by a given ID
