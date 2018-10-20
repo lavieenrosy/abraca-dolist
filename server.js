@@ -18,11 +18,16 @@ const datahelpers = require('./datahelpers')(knex);
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
 
-const todos = datahelpers.getTodos();
+const todos      = datahelpers.getTodos();
+const deleteTodo = datahelpers.deleteTodo(1111115);
 
-datahelpers.insertTodo('la croix', 'food', 2).then((id) => {
-  console.log("Record insertion was successful", id);
+deleteTodo.then((data) =>{
+  console.log('You deleted', data)
 });
+
+// datahelpers.insertTodo('la croix', 'food', 2).then((id) => {
+//   console.log("Record insertion was successful", id);
+// });
 
 // todos.then((data) => {
 //   console.log(data);
@@ -71,6 +76,12 @@ app.get('/todos', function(req, res) {
   });
 
 });
+//---------------------DELETE ROUTES---------------------//
+app.post('todo/:id/delete', function(req, res) {
+
+
+})
+
 
 //---------------------EDIT ROUTES---------------------//
 // client --changes--> server --changes--> DB

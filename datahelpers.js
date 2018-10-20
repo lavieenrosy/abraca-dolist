@@ -4,12 +4,20 @@
 module.exports = function(knex) {
 
   return {
+    //gets all the todos
     getTodos: function() {
-
       const query =  knex.select('*').from('todos')
+      .where('deleted', 'n')
       return query;
     },
-
+    //gets one todo by a given id
+    findTodo: function(id){
+      const query = knex.select('*')
+      .from('todos')
+      .where('id', id)
+      return query;
+    },
+    //inserts a todo with three fields
     insertTodo: function(name, category, user_id) {
       return knex('todos')
       .insert({
@@ -18,22 +26,15 @@ module.exports = function(knex) {
         user_id:  user_id
       })
       .returning('id')
+    },//deletes a todo by a given ID
+    deleteTodo: function(id){
+      return knex('todos')
+      .where('id', id)
+      .update({
+        deleted: 'y'
+      })
     }
   };
 
-  //send request to Yelp
 
-function requestToYelp(todo, cb) {
-  var options = {
-    url: "https://api.yelp.com/v3/businesses/search?term=" + todo + "&location=canada",
-    headers: {
-      'User-Agent': 'lavieenrosy',
-      //process.env.USER_AGENT,
-      'Authorization': 'token ' + auth.GITHUB_TOKEN
-      //'Authorization': 'token ' + process.env.GITHUB_TOKEN
-    },
-    json: true
-  };
-  request(options, cb);
-}
 }
