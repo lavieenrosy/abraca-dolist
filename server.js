@@ -159,3 +159,20 @@ app.post('/todos', function(req, res) {
 app.listen(PORT, () => {
   console.log("Abraca-Dolist listening on port:" + PORT);
 });
+
+app.post('/todo/:id', function(req, res) {
+  knex('table-name')
+  .where('id', id)
+  .delete({
+    category: 'category'
+  })
+})
+
+
+
+
+
+
+
+
+
