@@ -1,41 +1,73 @@
-module.exports = function getCategory(arrayOfCategories) {
+module.exports = function getCategory(result) {
 
-    // arrayOfValueObjects.forEach((item) => {
-    //     var category = item.name;
-    //     arrayOfCategories.push(category);
-    // });
+    const arrayOfCategories = [];
 
-    var BookClass                = arrayOfCategories.includes('BookClass');
-    var Movie                    = arrayOfCategories.includes('Movie');
-    var MovieClass               = arrayOfCategories.includes('MovieClass');
-    var ConsumerProductsPTEClass = arrayOfCategories.includes('ConsumerProductsPTEClass');
-    // var RetailLocationClass = arrayOfCategories.includes('RetailLocationClass');
-    var FoodTrueOrFalse = "";
+    // pushes categories into arrayOfCategories via Wolfram's "assumptions" object/array
+
+    if (Array.isArray(result.queryresult.assumptions)) {
+      for (let i = 0; i < result.queryresult.assumptions.length; i++) {
+        const valuesObject = result.queryresult.assumptions[i].values;
+        valuesObject.forEach((item) => {
+          const category = item.name;
+          arrayOfCategories.push(category);
+        });
+      }
+    } else if (result.queryresult.assumptions instanceof Object) {
+      const valuesObject = result.queryresult.assumptions.values;
+      valuesObject.forEach((item) => {
+        const category = item.name;
+        arrayOfCategories.push(category);
+      });
+    }
+
+    // pushes categories into arrayOfCategories via Wolfram's "pods" object
+
+    if (result.queryresult.pods) {
+      const podsObject = result.queryresult.pods;
+      podsObject.forEach((item) => {
+        const category = item.id;
+        arrayOfCategories.push(category);
+      });
+    }
+    console.log(arrayOfCategories);
+
+    const bookClass                = arrayOfCategories.includes('BookClass');
+    const movie                    = arrayOfCategories.includes('Movie');
+    const movieClass               = arrayOfCategories.includes('MovieClass');
+    const consumerProductsPTEClass = arrayOfCategories.includes('ConsumerProductsPTEClass');
+    const televisionProgram        = arrayOfCategories.includes('TelevisionProgram');
+    let containsTelevision = "";
+    let containsFood = "";
 
     arrayOfCategories.forEach((item) => {
-        let word = 'Food';
-        if (item.includes(word)) {
-            FoodTrueOrFalse = true;
+        let food = 'Food';
+        let television = 'Television';
+        if (item.includes(food)) {
+            containsFood = true;
+        }
+        if (item.includes(television)) {
+            containsTelevision = true;
         }
     });
 
-    var Food = FoodTrueOrFalse;
+    const food = containsFood;
+    const television = containsTelevision;
 
-    // console.log(BookClass, Movie, MovieClass, ConsumerProductsPTEClass, RetailLocationClass, Food)
+    let category = "";
 
-    var category = "";
-    if (BookClass) {
+    if (bookClass) {
         category = "read";
-    } else if (MovieClass || Movie) {
+    } else if (movieClass || movie || televisionProgram || television) {
         category = "watch";
-    } else if (ConsumerProductsPTEClass) {
+    } else if (consumerProductsPTEClass) {
         category = "buy";
-    } else if (Food) {
+    } else if (food) {
         category = "eat";
     } else {
         category = "buy";
     }
-
+    console.log("Category: ", category);
     return category;
 };
+
 
