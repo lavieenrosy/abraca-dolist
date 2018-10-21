@@ -41,7 +41,7 @@ $(() => {
         type: 'POST',
         url: (`/todos/${todo_id}/delete`),
         success: function (data){
-          console.log('Gaurav rules')
+          loadTodos();
         },
         error: function (err, data) {
           console.log('Error: ', err);
@@ -90,7 +90,7 @@ $('#todo-form').on('submit', function (event) {
   // text field cannot be left empty---
    $('.error').slideUp();
       if(submitText === "" ){
-        $('.error').text("Error: Cannot leave this field empty").slideDown();
+        $('.error').text("Give me something").slideDown();
     } else {
       const data = $('form').serialize();
       $.ajax( '/todos', { method: 'POST', data: data })
@@ -153,6 +153,7 @@ $('#todo-form').on('submit', function (event) {
         console.log('Error: ', err);
       }
     });
+    loadTodos();
   }
 
 });
