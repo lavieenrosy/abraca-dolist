@@ -6,15 +6,16 @@ module.exports = function(knex) {
   return {
     //gets all the todos
     getTodos: function() {
-      const query =  knex.select('*').from('todos')
+      const query =  knex.select('*')
+      .from('todos')
       .where('deleted', 'n')
       return query;
     },
     //gets one todo by a given id
-    findTodo: function(id){
+    findTodoByName: function(name){
       const query = knex.select('*')
       .from('todos')
-      .where('id', id)
+      .where('name', name)
       return query;
     },
     //inserts a todo with three fields
@@ -33,6 +34,13 @@ module.exports = function(knex) {
       .where('id', id)
       .update({
         deleted: 'y'
+      })
+    },
+    unDeleteTodo: function(id){
+      return knex('todos')
+      .where('id', id)
+      .update({
+        deleted: 'n'
       })
     },
     updateTodo: function(id, category) {

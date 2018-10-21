@@ -29,7 +29,6 @@ module.exports = function getCategory(result) {
         arrayOfCategories.push(category);
       });
     }
-    console.log(arrayOfCategories);
 
     const bookClass                = arrayOfCategories.includes('BookClass');
     const movie                    = arrayOfCategories.includes('Movie');
@@ -66,7 +65,6 @@ module.exports = function getCategory(result) {
     } else {
         category = "buy";
     }
-    console.log("Category: ", category);
     return category;
 };
 
