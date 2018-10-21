@@ -17,6 +17,7 @@ const datahelpers = require('./datahelpers')(knex);
 const auth        = require('./secrets.js');
 const request     = require('request');
 const apihelpers  = require('./apihelpers')
+const yelphelper  = require('./yelphelper');
 const fetch       = require("node-fetch");
 
 // Seperated Routes for each Resource
@@ -82,6 +83,7 @@ app.patch('/todos/:id/edit', function(req, res) {
 });
 
 
+
 app.post('/todos', function(req, res) {
   const name = req.body.text;
   const foundTodo   = datahelpers.findTodoByName(name);
@@ -94,6 +96,24 @@ app.post('/todos', function(req, res) {
         .then((result)=> res.json(result))
       });
     } else {
+      requestToYelp(name, function(data) {
+        let category = yelphelper(data, name);
+
+        if (category = "eat") {
+          console.log("SUCCESS EAT")
+          let id = 0;
+
+          datahelpers.insertTodo(name, category).then((id) => {
+            id = id;
+          });
+
+          const newTodoObject = { id, name, category };
+          res.json(newTodoObject);
+        } else if (category = "no restaurant") {
+          console.log("NUTTIN TO EAT");
+        }
+
+      });
 
       requestToWolfram(name, function(err, result) {
         const category = apihelpers(result);
@@ -106,7 +126,6 @@ app.post('/todos', function(req, res) {
         const newTodoObject = { id, name, category };
 
         res.json(newTodoObject);
-
       });
     }
   })
@@ -129,12 +148,13 @@ function requestToYelp(input, cb) {
       return res.json();
     })
     .then((data) => {
-      cb(err, data);
+      cb(data);
     })
     .catch((err) => {
-      console.log('ERROR: ', err.message);
+      console.log('ERROR: ', err);
     });
 };
+
 
 // Wolfram Alpha
 
