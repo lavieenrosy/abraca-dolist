@@ -98,8 +98,8 @@ app.post('/todos', function(req, res) {
     } else {
       requestToYelp(name, function(data) {
         let category = yelphelper(data, name);
-
-        if (category = "eat") {
+        console.log("CATEGORY: ", category);
+        if (category === "eat") {
           console.log("SUCCESS EAT")
           let id = 0;
 
@@ -109,23 +109,23 @@ app.post('/todos', function(req, res) {
 
           const newTodoObject = { id, name, category };
           res.json(newTodoObject);
-        } else if (category = "no restaurant") {
-          console.log("NUTTIN TO EAT");
+
+        } else { //if (category === "none") {
+            console.log("NO RESTAURANT SO WOLFRAM")
+            requestToWolfram(name, function(err, result) {
+              const category = apihelpers(result);
+              let id         = 0;
+
+              datahelpers.insertTodo(name, category).then((id) => {
+                id = id;
+              });
+
+              const newTodoObject = { id, name, category };
+
+              res.json(newTodoObject);
+            });
         }
 
-      });
-
-      requestToWolfram(name, function(err, result) {
-        const category = apihelpers(result);
-        let id         = 0;
-
-        datahelpers.insertTodo(name, category).then((id) => {
-          id = id;
-        });
-
-        const newTodoObject = { id, name, category };
-
-        res.json(newTodoObject);
       });
     }
   })
