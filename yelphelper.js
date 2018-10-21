@@ -3,7 +3,7 @@ module.exports = function yelpFunction(response, inputName) {
   console.log(response);
 
   if (response.businesses.length === 0) {
-    category = "no restaurant";
+    category = "none";
   }
 
   const businesses = response.businesses;

@@ -31,21 +31,27 @@ module.exports = function getCategory(result) {
     }
 
     const bookClass                = arrayOfCategories.includes('BookClass');
+    const BookClass                = arrayOfCategories.includes('book')
     const movie                    = arrayOfCategories.includes('Movie');
     const movieClass               = arrayOfCategories.includes('MovieClass');
     const consumerProductsPTEClass = arrayOfCategories.includes('ConsumerProductsPTEClass');
     const televisionProgram        = arrayOfCategories.includes('TelevisionProgram');
     let containsTelevision = "";
     let containsFood = "";
+    let containsBook = "";
 
     arrayOfCategories.forEach((item) => {
         let food = 'Food';
         let television = 'Television';
+        let book = 'Book';
         if (item.includes(food)) {
-            containsFood = true;
+          containsFood = true;
         }
         if (item.includes(television)) {
-            containsTelevision = true;
+          containsTelevision = true;
+        }
+        if (item.includes(book)) {
+          containsBook = true;
         }
     });
 
@@ -54,7 +60,7 @@ module.exports = function getCategory(result) {
 
     let category = "";
 
-    if (bookClass) {
+    if (bookClass || containsBook) {
         category = "read";
     } else if (movieClass || movie || televisionProgram || television) {
         category = "watch";
