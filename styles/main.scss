@@ -41,6 +41,18 @@ form {
   margin: 0 auto;
 }
 
+#todo-input {
+    height: 38px;
+    width: 316px;
+    border-radius: 2px;
+}
+
+.btn {
+  float: right;
+  background-color: slategray;
+  border-color: black;
+}
+
 //-------------------- Button Styling --------------------//
 
 .edit-button {
@@ -97,4 +109,11 @@ form {
   padding: 10px;
   border-radius: 0px;
   border-bottom: 1px solid black;
+}
+
+.row {
+ min-height: 250px;
+}
+.error {
+  color: red;
 }

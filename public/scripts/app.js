@@ -41,7 +41,7 @@ $(() => {
         type: 'POST',
         url: (`/todos/${todo_id}/delete`),
         success: function (data){
-          console.log('Gaurav rules')
+          loadTodos();
         },
         error: function (err, data) {
           console.log('Error: ', err);
@@ -83,24 +83,28 @@ $(() => {
   }
   loadTodos();
 
+$('#todo-input').keyup(function(){
+ $('.error').slideUp();
+});
+
 $('#todo-form').on('submit', function (event) {
   event.preventDefault();
   var submitText = $('#todo-input').val();
 
-  // text field cannot be left empty---
-   $('.error').slideUp();
-      if(submitText === "" ){
-        $('.error').text("Error: Cannot leave this field empty").slideDown();
-    } else {
-      const data = $('form').serialize();
-      $.ajax( '/todos', { method: 'POST', data: data })
-        .then(function (data) {
-          console.log('Success!', data);
-          singleTodo(data);
-          loadTodos();
-          feather.replace()
-          event.target.reset();
-       });
+// text field cannot be left empty---
+ $('.error').slideUp();
+    if(submitText === "" ){
+      $('.error').text("Oops ! did you forget something ?").slideDown();
+  } else {
+    const data = $('form').serialize();
+    $.ajax( '/todos', { method: 'POST', data: data })
+      .then(function (data) {
+        console.log('Success!', data);
+        singleTodo(data);
+        loadTodos();
+        feather.replace()
+        event.target.reset();
+     });
     }
   });
 
@@ -108,7 +112,7 @@ $('#todo-form').on('submit', function (event) {
 
   // Tutorial: https://www.tutorialspoint.com/jqueryui/jqueryui_draggable.htm. Look at grid option to snap to a grid
 
-  $( '.card' ).draggable({ appendTo: $('.col'), containment: $('.col') });
+  $('.card').draggable({ appendTo: $('.col'), containment: $('.col') });
 
   $('.eat' ).droppable({
     drop: function( event, ui ) {
@@ -153,6 +157,7 @@ $('#todo-form').on('submit', function (event) {
         console.log('Error: ', err);
       }
     });
+    loadTodos();
   }
 
 });
