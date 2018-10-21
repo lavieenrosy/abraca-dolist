@@ -1,18 +1,20 @@
 $(() => {
 
+//--------------- Creating & Rendering Todos ---------------//
 
   function createTodoElement(data) {
     const $card     = $("<div>").addClass("card").attr('id', data.id).draggable();
     const $cardText = $("<div>").addClass("card-body").text(data.name).appendTo($card); //change this later
-    const $edit     = $("<button class='edit'> Edit</button>").appendTo($cardText);
-    const $delete   = $("<button class='delete'> Delete</button>").attr('id',data.id).data('todo_id', data.id).appendTo($cardText);
+    const $delete   = $("<button>").addClass('delete').attr('id',data.id).data('todo_id', data.id).appendTo($cardText);
+    const $check    = $("<i>").addClass("check-mark").attr("data-feather", "check").appendTo($delete);
+    const $edit     = $("<button>").addClass("edit-button").appendTo($cardText);
+    const $editPen  = $("<i>").addClass("edit-pen").attr("data-feather", "edit-3").appendTo($edit);
 
     // $delete.on('click', ()=>console.log("log log console console"));
 
     return $card;
   };
 
-  //assuming dat is in an array
   function renderTodos(data) {
     $('.card').empty();
     for (i = 0; i < data.length; i++) {
@@ -64,12 +66,15 @@ $(() => {
 
   };
 
+//------------------------- AJAX Requests -------------------------//
+
   function loadTodos() {
     $.ajax({
       type: 'GET',
       url: ('/todos'),
       success: function (data) {
         renderTodos(data);
+        feather.replace() //renders icons from the feather library
       },
       error: function (err, data) {
         console.log('Error: ', err);
@@ -78,10 +83,32 @@ $(() => {
   }
   loadTodos();
 
-  // Drag and drop functionality. Tutorial: https://www.tutorialspoint.com/jqueryui/jqueryui_draggable.htm
-  $( '.card' ).draggable({ appendTo: $('.col'), containment: $('.col') });
+$('#todo-form').on('submit', function (event) {
+  event.preventDefault();
+  var submitText = $('#todo-input').val();
 
-    //look at grid option to snap to a grid
+  // text field cannot be left empty---
+   $('.error').slideUp();
+      if(submitText === "" ){
+        $('.error').text("Error: Cannot leave this field empty").slideDown();
+    } else {
+      const data = $('form').serialize();
+      $.ajax( '/todos', { method: 'POST', data: data })
+        .then(function (data) {
+          console.log('Success!', data);
+          singleTodo(data);
+          loadTodos();
+          feather.replace()
+          event.target.reset();
+       });
+    }
+  });
+
+//------------------------- Drag & Drop -------------------------//
+
+  // Tutorial: https://www.tutorialspoint.com/jqueryui/jqueryui_draggable.htm. Look at grid option to snap to a grid
+
+  $( '.card' ).draggable({ appendTo: $('.col'), containment: $('.col') });
 
   $('.eat' ).droppable({
     drop: function( event, ui ) {
@@ -111,28 +138,7 @@ $(() => {
     }
   });
 
-$('#todo-form').on('submit', function (event) {
-  event.preventDefault();
-  var submitText = $('#todo-input').val();
-
-  // text field cannot be left empty---
-   $('.error').slideUp();
-      if(submitText === "" ){
-        $('.error').text("Error: Cannot leave this field empty").slideDown();
-    } else {
-      const data = $('form').serialize();
-      $.ajax( '/todos', { method: 'POST', data: data })
-        .then(function (data) {
-          console.log('Success!', data);
-          singleTodo(data);
-          loadTodos();
-          event.target.reset();
-       });
-    }
-  });
-
   function saveCat(category, id){
-
 
     const data2BSent = {category: category};
     $.ajax({
