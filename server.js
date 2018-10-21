@@ -83,7 +83,6 @@ app.get('/todos', function(req, res) {
 app.post('/todos/:id/delete', function(req, res) {
 
   datahelpers.deleteTodo(req.params.id).then((data) =>{
-    console.log('You deleted', data);
     res.json({result:"True"});
   })
 
@@ -95,14 +94,15 @@ app.post('/todos/:id/delete', function(req, res) {
 // client --changes--> server --changes--> DB
 // changes are simply the todo id and new category
 
-app.patch('/todo/:id', function(req, res) {
+app.patch('/todos/:id/edit', function(req, res) {
 
-  knex('table-name')
-    .where('id', id)
-    .update({
-      category: 'category'
-    })
-  //figure out what knex returns (a promise?) and send that back to the client
+ datahelpers.updateTodo(req.params.id, req.body.category).then((data) =>{
+  res.json({result:"True"});
+ })
+
+ console.log(req.body);
+
+
 
 });
 
