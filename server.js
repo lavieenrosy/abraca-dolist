@@ -21,9 +21,19 @@ const apihelpers  = require('./apihelpers')
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
 
-const todos       = datahelpers.getTodos();
-const deleteTodo  = datahelpers.deleteTodo(1111115);
 
+const todos       = datahelpers.getTodos();
+const name = 'Starbucks';
+
+
+
+
+  // .then((todo)=>{
+  //   return datahelpers.findTodoByName(todo.name);
+  // })
+  // .then((updatedTodo) => {
+  //   console.log(updatedTodo)
+  // })
 // deleteTodo.then((data) =>{
 //   console.log('You deleted', data)
 // });
@@ -112,6 +122,37 @@ app.patch('/todos/:id/edit', function(req, res) {
 // dataHelper2 creates new todo in DB
 // dataHelper3 SELECT the new todo from the DB and send it to the client
 
+app.post('/todos', function(req, res) {
+  const name = req.body.text;
+  const foundTodo   = datahelpers.findTodoByName(name);
+
+  foundTodo
+  .then((resp) => {
+    if (resp.length != 0){
+      return datahelpers.unDeleteTodo(resp[0].id).then(()=>{
+        datahelpers.findTodoByName(name)
+        .then((result)=> res.json(result))
+      });
+    } else {
+
+      requestToWolfram(name, function(err, result) {
+        const category = apihelpers(result);
+        let id         = 0;
+
+        datahelpers.insertTodo(name, category).then((id) => {
+          id = id;
+        });
+
+        const newTodoObject = { id, name, category };
+
+        res.json(newTodoObject);
+
+      });
+    }
+  })
+
+
+});
 
 function requestToWolfram(input, cb) {
   var options = {
@@ -123,56 +164,12 @@ function requestToWolfram(input, cb) {
   });
 };
 
-app.post('/todos', function(req, res) {
 
-  const name = req.body.text;
-
-  requestToWolfram(name, function(err, result) {
-    // var arrayOfValueObjects = result.queryresult.assumptions.values;
-    // var arrayOfCategories = [];
-
-    // if (arrayOfValueObjects){
-    //   arrayOfValueObjects.forEach((item) => {
-    //     var category = item.name;
-    //     arrayOfCategories.push(category);
-    //   });
-    //   console.log(arrayOfCategories);
-    // } else {
-    //   console.log("No data fetched");
-    // };
-
-    const category = apihelpers(result);
-
-    let id = 0;
-
-    datahelpers.insertTodo(name, category).then((id) => {
-      console.log("Record insertion was successful", id);
-      id = id;
-    });
-
-    const newTodoObject = { id, name, category };
-
-  res.json(newTodoObject);
-
-  });
-  //send request to API with req.body.text
-  // const nameAndCategory = dataHelper1(responseFromAPI);
-  // dataHelper2();
-  // const newTodo = dataHelper3()
-
-});
 
 app.listen(PORT, () => {
   console.log("Abraca-Dolist listening on port:" + PORT);
 });
 
-app.post('/todo/:id', function(req, res) {
-  knex('table-name')
-  .where('id', id)
-  .delete({
-    category: 'category'
-  })
-})
 
 
 
