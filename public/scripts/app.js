@@ -4,8 +4,11 @@ $(() => {
   function createTodoElement(data) {
     const $card     = $("<div>").addClass("card").attr('id', data.id).draggable();
     const $cardText = $("<div>").addClass("card-body").text(data.name).appendTo($card); //change this later
-    const $edit     = $("<button class='edit'> Edit</button>").appendTo($cardText);
+    // const $edit     = $("<button class='edit'> Edit</button>").appendTo($cardText);
+    // const $flag = $("<i>").addClass("check-mark").attr("data-feather", "check").appendTo($edit);
+
     const $delete   = $("<button class='delete'> Delete</button>").attr('id',data.id).data('todo_id', data.id).appendTo($cardText);
+
 
     // $delete.on('click', ()=>console.log("log log console console"));
 
@@ -70,6 +73,7 @@ $(() => {
       url: ('/todos'),
       success: function (data) {
         renderTodos(data);
+        feather.replace()
       },
       error: function (err, data) {
         console.log('Error: ', err);
@@ -126,6 +130,7 @@ $('#todo-form').on('submit', function (event) {
           console.log('Success!', data);
           singleTodo(data);
           loadTodos();
+          feather.replace()
           event.target.reset();
        });
     }

@@ -1,0 +1,52 @@
+/*CODE HERE*/
+
+body {
+  background-color: white;
+  font-family: 'Nunito', sans-serif;
+}
+
+.container {
+  padding: 0px;
+}
+
+.banner {
+  background-color: gold;
+  margin-top: 40px;
+  text-align: center;
+  padding: 30px;
+}
+
+h1 {
+  margin-bottom: 0px;
+}
+
+.main-input-section {
+  height: 200px;
+  margin-top: 50px;
+  border-bottom: 2px solid black;
+  margin-bottom: 20px;
+}
+
+form {
+  width: 400px;
+  top: 50%;
+  margin: 0 auto;
+}
+
+.edit {
+  float: right;
+}
+
+.delete {
+  float: left;
+}
+
+.col {
+  border: 1px solid black;
+  margin: 0 8px;
+  padding: 15px;
+}
+
+.card-body {
+  padding: 10px;
+}

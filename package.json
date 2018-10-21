@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "local": "./node_modules/.bin/nodemon -L --ignore public/",
-    "knex": "./node_modules/.bin/knex"
+    "knex": "./node_modules/.bin/knex",
+    "sass": "sass --watch ./styles:./public/styles"
   },
   "author": "Lighthouse Labs",
   "license": "ISC",
@@ -21,6 +22,7 @@
     "morgan": "^1.7.0",
     "node-sass-middleware": "^0.9.8",
     "pg": "^6.0.2",
+    "sass": "^1.14.3",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
