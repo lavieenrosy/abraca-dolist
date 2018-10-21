@@ -10,8 +10,6 @@ $(() => {
     const $edit     = $("<button>").addClass("edit-button").appendTo($cardText);
     const $editPen  = $("<i>").addClass("edit-pen").attr("data-feather", "edit-3").appendTo($edit);
 
-    // $delete.on('click', ()=>console.log("log log console console"));
-
     return $card;
   };
 
@@ -35,7 +33,6 @@ $(() => {
       event.preventDefault();
       const todo_id = $(this).data('todo_id');
       console.log($('#'+todo_id).parent());
-      // $('#'+todo_id).parent().empty();
       $('#'+todo_id).closest('.ui-draggable').hide();
       $.ajax({
         type: 'POST',
