@@ -1,7 +1,9 @@
 /*CODE HERE*/
 
+$primary-color: gold;
+
 body {
-  background-color: white;
+  background-color: #FFF9F9;
   font-family: 'Nunito', sans-serif;
 }
 
@@ -10,7 +12,7 @@ body {
 }
 
 .banner {
-  background-color: gold;
+  background-color: $primary-color;
   margin-top: 40px;
   text-align: center;
   padding: 30px;
@@ -19,6 +21,12 @@ body {
 h1 {
   margin-bottom: 0px;
 }
+
+h5 {
+  margin: 5px 0 15px;
+}
+
+//-------------------- Form Styling --------------------//
 
 .main-input-section {
   height: 150px;
@@ -33,8 +41,17 @@ form {
   margin: 0 auto;
 }
 
-.edit {
+//-------------------- Button Styling --------------------//
+
+.edit-button {
   float: right;
+  border: 0px;
+  padding: 0px;
+  color: white;
+}
+
+.card :hover .edit-button{
+  color: $primary-color;
 }
 
 .delete {
@@ -45,27 +62,32 @@ form {
 }
 
 .delete :hover {
-  color: gold;
+  color: $primary-color;
+}
+
+//-------------------- List Styling --------------------//
+
+.col {
+  padding: 0 23px;
+}
+
+%border-divide {
+  border-right: 2px solid black;
 }
 
 .eat {
-  padding: 0 23px;
-  border-right: 2px solid black;
+  @extend %border-divide;
 }
 
 .watch {
-  padding: 0 23px;
-  border-right: 2px solid black;
+  @extend %border-divide;
 }
 
 .read {
-  padding: 0 23px;
-  border-right: 2px solid black;
+  @extend %border-divide;
 }
 
-.buy {
-  padding: 0 23px;
-}
+//-------------------- Card Styling --------------------//
 
 .card {
   border: none;
