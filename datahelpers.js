@@ -11,7 +11,7 @@ module.exports = function(knex) {
       .where('deleted', 'n')
       return query;
     },
-    //gets one todo by a given id
+    //gets one todo by a given name
     findTodoByName: function(name){
       const query = knex.select('*')
       .from('todos')
@@ -41,7 +41,7 @@ module.exports = function(knex) {
       .where('id', id)
       .update({
         deleted: 'n'
-      })
+      }).then()
     },
     updateTodo: function(id, category) {
       return knex('todos')

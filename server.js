@@ -23,18 +23,17 @@ const usersRoutes = require("./routes/users");
 
 
 const todos       = datahelpers.getTodos();
-const foundTodo   = datahelpers.findTodoByName('Starbucks');
+const name = 'Starbucks';
 
 
-foundTodo.then((data) => {
-  if (data.length != 0){
-    datahelpers.unDeleteTodo(data[0].id)
-    .then(console.log(data[0].deleted))
-    return
-  }
-  console.log('Nothing by that name')
-})
 
+
+  // .then((todo)=>{
+  //   return datahelpers.findTodoByName(todo.name);
+  // })
+  // .then((updatedTodo) => {
+  //   console.log(updatedTodo)
+  // })
 // deleteTodo.then((data) =>{
 //   console.log('You deleted', data)
 // });
@@ -123,6 +122,37 @@ app.patch('/todos/:id/edit', function(req, res) {
 // dataHelper2 creates new todo in DB
 // dataHelper3 SELECT the new todo from the DB and send it to the client
 
+app.post('/todos', function(req, res) {
+  const name = req.body.text;
+  const foundTodo   = datahelpers.findTodoByName(name);
+
+  foundTodo
+  .then((resp) => {
+    if (resp.length != 0){
+      return datahelpers.unDeleteTodo(resp[0].id).then(()=>{
+        datahelpers.findTodoByName(name)
+        .then((result)=> res.json(result))
+      });
+    } else {
+
+      requestToWolfram(name, function(err, result) {
+        const category = apihelpers(result);
+        let id         = 0;
+
+        datahelpers.insertTodo(name, category).then((id) => {
+          id = id;
+        });
+
+        const newTodoObject = { id, name, category };
+
+        res.json(newTodoObject);
+
+      });
+    }
+  })
+
+
+});
 
 function requestToWolfram(input, cb) {
   var options = {
@@ -134,23 +164,7 @@ function requestToWolfram(input, cb) {
   });
 };
 
-app.post('/todos', function(req, res) {
-  const name = req.body.text;
 
-  requestToWolfram(name, function(err, result) {
-    const category = apihelpers(result);
-    let id         = 0;
-
-    datahelpers.insertTodo(name, category).then((id) => {
-      id = id;
-    });
-
-  const newTodoObject = { id, name, category };
-
-  res.json(newTodoObject);
-
-  });
-});
 
 app.listen(PORT, () => {
   console.log("Abraca-Dolist listening on port:" + PORT);
