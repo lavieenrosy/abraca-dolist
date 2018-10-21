@@ -128,19 +128,19 @@ app.post('/todos', function(req, res) {
   const name = req.body.text;
 
   requestToWolfram(name, function(err, result) {
-    var arrayOfValueObjects = result.queryresult.assumptions.values;
-    var arrayOfCategories = [];
+    // var arrayOfValueObjects = result.queryresult.assumptions.values;
+    // var arrayOfCategories = [];
 
-    if (arrayOfValueObjects){
-      arrayOfValueObjects.forEach((item) => {
-        var category = item.name;
-        arrayOfCategories.push(category);
-      });
-      console.log(arrayOfCategories);
-    } else {
-      console.log("No data fetched");
-    };
-    const category = apihelpers(arrayOfCategories);
+    // if (arrayOfValueObjects){
+    //   arrayOfValueObjects.forEach((item) => {
+    //     var category = item.name;
+    //     arrayOfCategories.push(category);
+    //   });
+    //   console.log(arrayOfCategories);
+    // } else {
+    //   console.log("No data fetched");
+    // };
+    const category = apihelpers(result);
 
     let id = 0;
 
