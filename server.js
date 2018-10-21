@@ -14,42 +14,14 @@ const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
 const datahelpers = require('./datahelpers')(knex);
-var auth          = require('./secrets.js');
-var request       = require('request');
+const auth        = require('./secrets.js');
+const request     = require('request');
 const apihelpers  = require('./apihelpers')
+const fetch       = require("node-fetch");
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
 
-
-const todos       = datahelpers.getTodos();
-const name = 'Starbucks';
-
-
-
-
-  // .then((todo)=>{
-  //   return datahelpers.findTodoByName(todo.name);
-  // })
-  // .then((updatedTodo) => {
-  //   console.log(updatedTodo)
-  // })
-// deleteTodo.then((data) =>{
-//   console.log('You deleted', data)
-// });
-
-// datahelpers.insertTodo('la croix', 'food', 2).then((id) => {
-//   console.log("Record insertion was successful", id);
-// });
-
-// todos.then((data) => {
-//   console.log(data);
-// })
-// .catch((error) => {
-//   console.log(error);
-// })
-// Load the logger first so all (static) HTTP requests are logged to STDOUT
-// 'dev' = Concise output colored by response status for development use.
 //The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan('dev'));
 
@@ -70,34 +42,32 @@ app.use(express.static("public"));
 app.use("/api/users", usersRoutes(knex));
 
 //-----------------------HOME PAGE-----------------------//
+
 app.get("/", (req, res) => {
   res.render("index");
 });
 
 //-------------------GET /lists ROUTES-------------------//
-// client --req--> server --lookup--> DB --todos--> server --todos--> client
 
 //grabs data from DB and sends json to client
 
 app.get('/todos', function(req, res) {
-
+  const todos = datahelpers.getTodos();
   todos.then((data) => {
     res.json(data);
   })
   .catch((error) => {
     res.status(500).json({error: err.message});
   });
-
 });
+
 //---------------------DELETE ROUTES---------------------//
+
 app.post('/todos/:id/delete', function(req, res) {
-
-  datahelpers.deleteTodo(req.params.id).then((data) =>{
+  datahelpers.deleteTodo(req.params.id).then((data) => {
     res.json({result:"True"});
-  })
-
-
-})
+  });
+});
 
 
 //---------------------EDIT ROUTES---------------------//
@@ -105,22 +75,12 @@ app.post('/todos/:id/delete', function(req, res) {
 // changes are simply the todo id and new category
 
 app.patch('/todos/:id/edit', function(req, res) {
-
  datahelpers.updateTodo(req.params.id, req.body.category).then((data) =>{
   res.json({result:"True"});
  })
-
  console.log(req.body);
-
-
-
 });
 
-//-------------------NEW TODO ROUTES-------------------//
-// client --todo--> server --todo--> API --data--> server(dataHelper1) --dataHelper2--> DB --id--> server(datahelper3) --todo--> client
-// dataHelper1 parses API data and returns a name & category
-// dataHelper2 creates new todo in DB
-// dataHelper3 SELECT the new todo from the DB and send it to the client
 
 app.post('/todos', function(req, res) {
   const name = req.body.text;
@@ -153,6 +113,30 @@ app.post('/todos', function(req, res) {
 
 
 });
+
+//-------------------API CALLS-------------------//
+
+// Yelp
+
+function requestToYelp(input, cb) {
+  fetch("https://api.yelp.com/v3/businesses/search?term=" + input + "&location=vancouver&categories=restaurants", {
+      headers: {
+        'Authorization': 'Bearer ' + auth.YELP_TOKEN,
+        'Content-Type': 'application/json' }
+  })
+    .then((res) => {
+      if (res.status >= 400) throw new Error('Could not fetch contents');
+      return res.json();
+    })
+    .then((data) => {
+      cb(err, data);
+    })
+    .catch((err) => {
+      console.log('ERROR: ', err.message);
+    });
+};
+
+// Wolfram Alpha
 
 function requestToWolfram(input, cb) {
   var options = {
