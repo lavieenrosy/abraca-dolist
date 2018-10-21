@@ -2,7 +2,7 @@ $(() => {
 
 
   function createTodoElement(data) {
-    const $card     = $("<div>").addClass("card")
+    const $card     = $("<div>").addClass("card").attr('id', data.id).draggable();
     const $cardText = $("<div>").addClass("card-body").text(data.name).appendTo($card); //change this later
     const $edit     = $("<button class='edit'> Edit</button>").appendTo($cardText);
     const $delete   = $("<button class='delete'> Delete</button>").attr('id',data.id).data('todo_id', data.id).appendTo($cardText);
@@ -32,11 +32,14 @@ $(() => {
     $('.delete').on('click', function(event) {
       event.preventDefault();
       const todo_id = $(this).data('todo_id');
+      console.log($('#'+todo_id).parent());
+      // $('#'+todo_id).parent().empty();
+      $('#'+todo_id).closest('.ui-draggable').hide();
       $.ajax({
         type: 'POST',
         url: (`/todos/${todo_id}/delete`),
         success: function (data){
-          $('#'+todo_id).parent().parent().empty();
+          console.log('Gaurav rules')
         },
         error: function (err, data) {
           console.log('Error: ', err);
@@ -53,14 +56,13 @@ $(() => {
       $('.eat').append(todo);
     } else if (data.category == "watch") {
       $('.watch').append(todo);
-    } else if (data.category == "read") {
+    } else if (data.category === "read") {
       $('.read').append(todo);
-    } else if (data.category == "buy") {
+    } else if (data.category === "buy") {
       $('.buy').append(todo);
     }
 
   };
-
 
   function loadTodos() {
     $.ajax({
@@ -81,9 +83,33 @@ $(() => {
 
     //look at grid option to snap to a grid
 
-  $( '.col' ).droppable();
+  $('.eat' ).droppable({
+    drop: function( event, ui ) {
+      const card_id = parseInt($(ui.draggable[0]).attr('id'));
+      saveCat('eat', card_id);
+    }
+  });
 
-  // Form capture
+  $('.watch').droppable({
+    drop: function( event, ui ) {
+      const card_id = parseInt($(ui.draggable[0]).attr('id'));
+      saveCat('watch', card_id);
+    }
+  });
+
+  $('.read').droppable({
+    drop: function( event, ui ) {
+      const card_id = parseInt($(ui.draggable[0]).attr('id'));
+      saveCat('read', card_id);
+    }
+  });
+
+  $('.buy').droppable({
+    drop: function( event, ui ) {
+      const card_id = parseInt($(ui.draggable[0]).attr('id'));
+      saveCat('buy', card_id);
+    }
+  });
 
 $('#todo-form').on('submit', function (event) {
   event.preventDefault();
@@ -104,5 +130,25 @@ $('#todo-form').on('submit', function (event) {
        });
     }
   });
+
+  function saveCat(category, id){
+
+
+    const data2BSent = {category: category};
+    $.ajax({
+      type: 'PATCH',
+      url: (`/todos/${id}/edit`),
+      data: data2BSent,
+      dataType:'text',
+      success: function (data){
+        ;
+      },
+      error: function (err, data) {
+        console.log('Error: ', err);
+      }
+    });
+  }
+
 });
+
 

@@ -36,6 +36,11 @@
   src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
   integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
   crossorigin="anonymous"></script>
+  <script>
+  $( function() {
+    $( "#draggable" ).draggable();
+  } );
+  </script>
 
   </head>
 
@@ -57,23 +62,23 @@
 
       <!-- Lists -->
 
-      <div class="row">
+      <div id="droppable" class="row">
 
         <!-- Eat list -->
 
-        <div class="col eat"> </div>
+        <div id="droppable" class="col eat"> </div>
 
         <!-- Watch list -->
 
-        <div class="col watch"> </div>
+        <div id="droppable" class="col watch"> </div>
 
         <!-- Read list -->
 
-        <div class="col read"> </div>
+        <div id="droppable" class="col read"> </div>
 
         <!-- Buy list -->
 
-        <div class="col buy"> </div>
+        <div id="droppable" class="col buy"> </div>
 
       </div>
 

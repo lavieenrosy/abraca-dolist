@@ -34,6 +34,13 @@ module.exports = function(knex) {
       .update({
         deleted: 'y'
       })
+    },
+    updateTodo: function(id, category) {
+      return knex('todos')
+      .where('id', id)
+      .update({
+        category: category
+      })
     }
   };
 
