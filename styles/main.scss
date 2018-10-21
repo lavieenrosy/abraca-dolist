@@ -21,10 +21,10 @@ h1 {
 }
 
 .main-input-section {
-  height: 200px;
+  height: 150px;
   margin-top: 50px;
   border-bottom: 2px solid black;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 form {
@@ -39,14 +39,40 @@ form {
 
 .delete {
   float: left;
+  border: 0px;
+  padding: 0px;
+  margin-right: 5px;
 }
 
-.col {
-  border: 1px solid black;
-  margin: 0 8px;
-  padding: 15px;
+.delete :hover {
+  color: gold;
+}
+
+.eat {
+  padding: 0 23px;
+  border-right: 2px solid black;
+}
+
+.watch {
+  padding: 0 23px;
+  border-right: 2px solid black;
+}
+
+.read {
+  padding: 0 23px;
+  border-right: 2px solid black;
+}
+
+.buy {
+  padding: 0 23px;
+}
+
+.card {
+  border: none;
 }
 
 .card-body {
   padding: 10px;
+  border-radius: 0px;
+  border-bottom: 1px solid black;
 }

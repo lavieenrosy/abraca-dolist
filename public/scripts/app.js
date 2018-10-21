@@ -4,10 +4,11 @@ $(() => {
   function createTodoElement(data) {
     const $card     = $("<div>").addClass("card").attr('id', data.id).draggable();
     const $cardText = $("<div>").addClass("card-body").text(data.name).appendTo($card); //change this later
-    // const $edit     = $("<button class='edit'> Edit</button>").appendTo($cardText);
-    // const $flag = $("<i>").addClass("check-mark").attr("data-feather", "check").appendTo($edit);
 
-    const $delete   = $("<button class='delete'> Delete</button>").attr('id',data.id).data('todo_id', data.id).appendTo($cardText);
+    const $delete   = $("<button>").addClass('delete').attr('id',data.id).data('todo_id', data.id).appendTo($cardText);
+    const $flag = $("<i>").addClass("check-mark").attr("data-feather", "check").appendTo($delete);
+
+    // const $edit     = $("<button class='edit'> Edit</button>").appendTo($cardText);
 
 
     // $delete.on('click', ()=>console.log("log log console console"));
