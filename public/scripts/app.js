@@ -33,7 +33,7 @@ $(() => {
       event.preventDefault();
       const todo_id = $(this).data('todo_id');
       console.log($('#'+todo_id).parent());
-      $('#'+todo_id).closest('.ui-draggable').hide();
+      $('#'+todo_id).closest('.ui-draggable').hide(1000);
       $.ajax({
         type: 'POST',
         url: (`/todos/${todo_id}/delete`),

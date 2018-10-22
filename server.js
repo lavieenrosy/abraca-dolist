@@ -13,20 +13,23 @@ const knexConfig  = require("./knexfile");
 const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
-const datahelpers = require('./datahelpers')(knex);
-const auth        = require('./secrets.js');
 const request     = require('request');
-const apihelpers  = require('./apihelpers')
-const yelphelper  = require('./yelphelper');
-const fetch       = require("node-fetch");
+const fetch       = require('node-fetch');
 
 // Seperated Routes for each Resource
+
+const auth        = require('./secrets.js');
+const datahelpers = require('./datahelpers')(knex);
 const usersRoutes = require("./routes/users");
+const apihelpers  = require('./apihelpers')
+const yelphelper  = require('./yelphelper');
 
 //The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
+
 app.use(morgan('dev'));
 
 // Log knex SQL queries to STDOUT as well
+
 app.use(knexLogger(knex));
 
 app.set("view engine", "ejs");
@@ -40,6 +43,7 @@ app.use("/styles", sass({
 app.use(express.static("public"));
 
 // Mount all resource routes
+
 app.use("/api/users", usersRoutes(knex));
 
 //-----------------------HOME PAGE-----------------------//
@@ -48,7 +52,7 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-//-------------------GET /lists ROUTES-------------------//
+//----------------------GET ROUTE----------------------//
 
 //grabs data from DB and sends json to client
 
@@ -62,7 +66,7 @@ app.get('/todos', function(req, res) {
   });
 });
 
-//---------------------DELETE ROUTES---------------------//
+//---------------------DELETE ROUTE---------------------//
 
 app.post('/todos/:id/delete', function(req, res) {
   datahelpers.deleteTodo(req.params.id).then((data) => {
@@ -70,10 +74,7 @@ app.post('/todos/:id/delete', function(req, res) {
   });
 });
 
-
-//---------------------EDIT ROUTES---------------------//
-// client --changes--> server --changes--> DB
-// changes are simply the todo id and new category
+//---------------------PATCH ROUTE---------------------//
 
 app.patch('/todos/:id/edit', function(req, res) {
  datahelpers.updateTodo(req.params.id, req.body.category).then((data) =>{
@@ -82,55 +83,45 @@ app.patch('/todos/:id/edit', function(req, res) {
  console.log(req.body);
 });
 
-
+//---------------------POST ROUTE---------------------//
 
 app.post('/todos', function(req, res) {
   const name = req.body.text;
-  const foundTodo   = datahelpers.findTodoByName(name);
+  const foundTodo = datahelpers.findTodoByName(name);
 
   foundTodo
   .then((resp) => {
-    if (resp.length != 0){
-      return datahelpers.unDeleteTodo(resp[0].id).then(()=>{
+    if (resp.length != 0) {
+      return datahelpers.unDeleteTodo(resp[0].id).then(() => {
         datahelpers.findTodoByName(name)
         .then((result)=> res.json(result))
       });
+
     } else {
       requestToYelp(name, function(data) {
         let category = yelphelper(data, name);
-        console.log("CATEGORY: ", category);
         if (category === "eat") {
-          console.log("SUCCESS EAT")
           let id = 0;
-
           datahelpers.insertTodo(name, category).then((id) => {
             id = id;
           });
-
           const newTodoObject = { id, name, category };
           res.json(newTodoObject);
 
         } else { //if (category === "none") {
-            console.log("NO RESTAURANT SO WOLFRAM")
-            requestToWolfram(name, function(err, result) {
-              const category = apihelpers(result);
-              let id         = 0;
-
-              datahelpers.insertTodo(name, category).then((id) => {
-                id = id;
-              });
-
-              const newTodoObject = { id, name, category };
-
-              res.json(newTodoObject);
+          requestToWolfram(name, function(err, result) {
+            const category = apihelpers(result);
+            let id = 0;
+            datahelpers.insertTodo(name, category).then((id) => {
+              id = id;
             });
-        }
-
+            const newTodoObject = { id, name, category };
+            res.json(newTodoObject);
+          });
+        };
       });
-    }
-  })
-
-
+    };
+  });
 });
 
 //-------------------API CALLS-------------------//
@@ -155,7 +146,6 @@ function requestToYelp(input, cb) {
     });
 };
 
-
 // Wolfram Alpha
 
 function requestToWolfram(input, cb) {
@@ -168,18 +158,6 @@ function requestToWolfram(input, cb) {
   });
 };
 
-
-
 app.listen(PORT, () => {
   console.log("Abraca-Dolist listening on port:" + PORT);
 });
-
-
-
-
-
-
-
-
-
-
