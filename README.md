@@ -1,6 +1,8 @@
-# Node Skeleton
+# ABRACA-DOLIST
 
-## Project Setup
+Abraca-dolist is a single page web application that categorizes your todos like magic. Using the Alpha Wolfram and Yelp APIs, Abraca-dolist utilizes 
+
+## Screenshots
 
 1. Create your own empty repo on GitHub
 2. Clone this repository (do not fork)

@@ -94,6 +94,7 @@ $('#todo-form').on('submit', function (event) {
       $('.error').text("Oops ! did you forget something ?").slideDown();
   } else {
     const data = $('form').serialize();
+    $('#todo-input').val("");
     $.ajax( '/todos', { method: 'POST', data: data })
       .then(function (data) {
         console.log('Success!', data);
