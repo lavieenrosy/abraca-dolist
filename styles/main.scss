@@ -52,6 +52,9 @@ form {
   background-color: slategray;
   border-color: black;
 }
+.btn:hover {
+  background-color: black;
+}
 
 //-------------------- Button Styling --------------------//
 
@@ -112,7 +115,7 @@ form {
 }
 
 .row {
- min-height: 250px;
+ min-height: 280px;
 }
 .error {
   color: red;

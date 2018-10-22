@@ -87,16 +87,21 @@ $('#todo-input').keyup(function(){
  $('.error').slideUp();
 });
 
+// $('.card-body').on('click' ,(function() {
+//   console.log("is this clicke")
+//     alert("handler for .click called")
+// }));
+
 $('#todo-form').on('submit', function (event) {
   event.preventDefault();
   var submitText = $('#todo-input').val();
-
 // text field cannot be left empty---
  $('.error').slideUp();
     if(submitText === "" ){
       $('.error').text("Oops ! did you forget something ?").slideDown();
   } else {
     const data = $('form').serialize();
+     $('#todo-input').val("");
     $.ajax( '/todos', { method: 'POST', data: data })
       .then(function (data) {
         console.log('Success!', data);
