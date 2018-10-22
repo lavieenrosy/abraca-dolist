@@ -7,8 +7,8 @@ $(() => {
     const $cardText = $("<div>").addClass("card-body").text(data.name).appendTo($card); //change this later
     const $delete   = $("<button>").addClass('delete').attr('id',data.id).data('todo_id', data.id).appendTo($cardText);
     const $check    = $("<i>").addClass("check-mark").attr("data-feather", "check").appendTo($delete);
-    const $edit     = $("<button>").addClass("edit-button").appendTo($cardText);
-    const $editPen  = $("<i>").addClass("edit-pen").attr("data-feather", "edit-3").appendTo($edit);
+    // const $edit     = $("<button>").addClass("edit-button").appendTo($cardText);
+    // const $editPen  = $("<i>").addClass("edit-pen").attr("data-feather", "edit-3").appendTo($edit);
 
     return $card;
   };
@@ -33,7 +33,7 @@ $(() => {
       event.preventDefault();
       const todo_id = $(this).data('todo_id');
       console.log($('#'+todo_id).parent());
-      $('#'+todo_id).closest('.ui-draggable').hide(1000);
+      $('#'+todo_id).closest('.ui-draggable').hide("slow");
       $.ajax({
         type: 'POST',
         url: (`/todos/${todo_id}/delete`),
